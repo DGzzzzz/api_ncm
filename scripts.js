@@ -1,4 +1,5 @@
-document.querySelector('#btn').addEventListener('click', function() {
+document.querySelector('#btn').addEventListener('click', function(event) {
+    event.preventDefault();
     let code = document.querySelector('#ncm').value;
 
     if(!/^\d{2,8}$/.test(code)) {
@@ -6,13 +7,13 @@ document.querySelector('#btn').addEventListener('click', function() {
         return
     }	
 
-    axios.get(`https://brasilapi.com.br/api/ncm/v1?${code}`)
+    axios.get(`https://brasilapi.com.br/api/ncm/v1/${code}`)
     .then(function(response) {
-        if (response.data.length > 0) {
-            document.querySelector('#descricao').innerHTML = response.data[0].descricao;
-            document.querySelector('#codigo').innerHTML = response.data[0].codigo;
-            document.querySelector('#data-inicio').innerHTML = response.data[0].data_inicio;
-            document.querySelector('#data-fim').innerHTML = response.data[0].data_fim;
+        if (response.data) {
+            document.querySelector('#descricao').innerHTML = response.data.descricao;
+            document.querySelector('#codigo').innerHTML = response.data.codigo;
+            document.querySelector('#data-inicio').innerHTML = response.data.data_inicio;
+            document.querySelector('#data-fim').innerHTML = response.data.data_fim;
 
             document.querySelector('#ncm').value = '';
 

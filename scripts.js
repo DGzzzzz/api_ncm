@@ -3,7 +3,8 @@ document.querySelector('#btn').addEventListener('click', function(event) {
     let code = document.querySelector('#ncm').value;
 
     if(!/^\d{2,8}$/.test(code)) {
-        alert('O código do NCM deve conter de 2 a 8 dígitos');
+        document.querySelector('#alert .modal-body').innerHTML = 'O código deve ter entre 2 e 8 dígitos.';
+        new bootstrap.Modal(document.getElementById('alert')).show();
         return
     }	
 
@@ -18,11 +19,17 @@ document.querySelector('#btn').addEventListener('click', function(event) {
             document.querySelector('#ncm').value = '';
 
         } else {
-            alert('Nenhum resultado encontrado');
+            document.querySelector('#alert .modal-body').innerHTML = 'Código não encontrado.';
+            new bootstrap.Modal(document.getElementById('alert')).show();
         }
     })
     .catch(function(error) {
-        console.log(error);
+        if (error.response && error.response.status === 404) {
+            document.querySelector('#alert .modal-body').innerHTML = 'Código não encontrado.';
+            new bootstrap.Modal(document.getElementById('alert')).show();
+        } else {
+            console.log(error);
+        }
     });
 });
 
